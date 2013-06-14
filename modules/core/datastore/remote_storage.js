@@ -77,6 +77,7 @@ M.DataProviderRemoteStorage = M.DataProvider.extend(
         readUrl = config.url + readUrl;
 
         this.remoteQuery('read', readUrl, config.read.httpMethod, obj.query, obj);
+        return this.remoteQuery('read', readUrl, config.read.httpMethod, obj.query, obj);
 
     },
 
@@ -101,7 +102,7 @@ M.DataProviderRemoteStorage = M.DataProvider.extend(
         var that = this;
         var config = this.config[obj.model.name];
 
-        M.Request.init({
+        var handle = M.Request.init({
             url: url,
             method: type,
             isJSON: YES,
@@ -164,7 +165,9 @@ M.DataProviderRemoteStorage = M.DataProvider.extend(
                 }
             },
             beforeSend: beforeSend ? beforeSend : null
-        }).send();
+        });
+        handle.send();
+        return handle;
     },
 
     /**
